@@ -12,7 +12,8 @@ public class Control {
 		file1.openFile();
 		
 		DataSorter data1 = new DataSorter(file1.readStudentData());
-		data1.DataCounter();
+		System.out.println(data1.XValues(data1.DataCounter()));
+		System.out.println(data1.YValues(data1.DataCounter()));
 
 	}
 
