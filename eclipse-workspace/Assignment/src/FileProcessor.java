@@ -34,21 +34,19 @@ public class FileProcessor {
 	}
 	
 	
-	// Method to count the occurrences of 
+	// Method to convert the CSV file into an Array
 	public List<String[]> readStudentData()
 	{
 		int fcount = 0;
 		int mcount = 0;
 		String line = "";
-		List<String[]> values = new ArrayList<>();
-		
+		List<String[]> values = new ArrayList<>();	// Array of arrays
 		
 		//ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>(6);
 		
 		try 
 		{
 			BufferedReader myReader = new BufferedReader(new FileReader(myFile));
-			
 			while((line = myReader.readLine()) != null)
 			{
 				values.add(line.split(","));
@@ -69,71 +67,6 @@ public class FileProcessor {
 		
 		return values;
 	}
-	
-	
-	
-	public String readFile()
-	{
-		String line = "";
-		
-		
-		try {
-			Scanner myScanner = new Scanner(myFile);
-			
-			while(myScanner.hasNextLine()) 
-			{
-				line = myScanner.nextLine();
-				System.out.println(line);
-			}
-			myScanner.close();
-			
-		}
-		
-		
-		catch(FileNotFoundException e) {
-			
-			e.printStackTrace();
-			System.out.println("error caught" + e.getMessage());
-		}
-		
-		return line;
-	}
-	
-	
-	// method to read a single line from the file
-	public boolean checkString(String check) {
-		
-		check = check.trim();
-		
-		String line = "";
-		boolean exists = false;
-		
-		try {
-			Scanner myScanner = new Scanner(myFile);
-			
-			while(myScanner.hasNextLine() && exists == false) 
-			{
-				line = myScanner.nextLine();
-				line = line.trim();
-				
-				if(line.equals(check)) {	// checks to see if role exists in role.txt
-					exists = true;
-				}
-				
-			}		
-			myScanner.close();
 
-		}
-		
-		catch(FileNotFoundException e) {
-			e.printStackTrace();
-			System.out.println("error caught" + e.getMessage());
-		}
-		
-		return exists;
-	}
-	
-	
-	// getter and setters
 	
 }
