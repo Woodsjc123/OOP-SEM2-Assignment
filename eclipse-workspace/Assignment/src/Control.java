@@ -8,12 +8,14 @@ public class Control {
 
 	public static void main(String[] args) {
 		
-		FileProcessor file1 = new FileProcessor("MLdata.csv");
-		file1.openFile();
+		NaiveBayes alg1 = new NaiveBayes("MLdata.csv");
+		//System.out.println(data1.XValues(data1.DataCounter()));
+		//System.out.println(data1.YValues(data1.DataCounter()));
+		alg1.generateData();
 		
-		DataSorter data1 = new DataSorter(file1.readStudentData());
-		System.out.println(data1.XValues(data1.DataCounter()));
-		System.out.println(data1.YValues(data1.DataCounter()));
+		
+		
+
 
 	}
 
