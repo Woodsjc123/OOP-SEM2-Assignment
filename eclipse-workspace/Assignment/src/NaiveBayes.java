@@ -25,6 +25,7 @@ public class NaiveBayes {
 		FileProcessor file1 = new FileProcessor(this.fileName);
 		file1.openFile();
 		
+	
 		DataSorter data1 = new DataSorter(file1.readStudentData());
 		data1.DataCounter();
 		data1.XValuesProbability();
