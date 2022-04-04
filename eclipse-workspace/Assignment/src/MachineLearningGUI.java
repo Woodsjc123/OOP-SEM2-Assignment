@@ -20,12 +20,14 @@ public class MachineLearningGUI extends JFrame implements ActionListener {
     private JPanel 			panel1, panel2, panel3, panel4, panel5, panel6;
     private JLabel 			label; 
     
+    
+    
     NaiveBayes alg1 = new NaiveBayes("MLdata.csv");
     
     MachineLearningGUI(String title) {
     	
     	super(title);
-    	setSize(500,700);
+    	setSize(400,500);
     	setLayout(new FlowLayout());
     	
     	
@@ -103,10 +105,32 @@ public class MachineLearningGUI extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+
 		if (e.getSource() == submit) {
 			
+			boolean isFemale = female.isSelected();
+			boolean isMale = male.isSelected();
 			
+			boolean doesHaveBusiness = hasBusiness.isSelected();
+			boolean doesNotHaveBusiness = noBusiness.isSelected();
+			
+			boolean doesHaveJob = hasJob.isSelected();
+			boolean doesNotHaveJob = noJob.isSelected();
+			
+			boolean urbanAddress = urban.isSelected();
+			boolean ruralAddress = rural.isSelected();
+
+			boolean studiesBusiness = doesStudy.isSelected();
+			boolean doesNotStudyBusiness = noStudies.isSelected();
+
+			
+			boolean[] XTraits = {isFemale, isMale, doesHaveBusiness, doesNotHaveBusiness, doesHaveJob, 
+								 doesNotHaveJob, urbanAddress, ruralAddress, studiesBusiness, doesNotStudyBusiness};
+			
+			
+			NaiveBayes alg1 = new NaiveBayes("MLdata.csv");
+			
+			alg1.calculateNaiveBayes(XTraits);
 		}
 	}
 

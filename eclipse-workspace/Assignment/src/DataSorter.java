@@ -37,6 +37,7 @@ public class DataSorter {
 	// Attributes
 	private long total = 0;
 	private double entrepreneurs = 0;
+	private double entrepreneursProb = 0;
 
 
 	private List<String[]> csvvalues = new ArrayList<>();
@@ -72,6 +73,16 @@ public class DataSorter {
 	public void setEntrepreneurs(long entrepreneurs) {
 		this.entrepreneurs = entrepreneurs;
 	}
+	
+
+	public double getEntrepreneursProb() {
+		return entrepreneursProb;
+	}
+
+	public void setEntrepreneursProb(double entrepreneursProb) {
+		this.entrepreneursProb = entrepreneursProb;
+	}
+
 	
 	// General frequencies
 	public ArrayList<Long> getFrequencies() {
@@ -184,6 +195,10 @@ public class DataSorter {
 		
 		setFrequencies(frequency);
 		setEntrepreneurs(entrepreneur);
+		
+		double dTotal = total;
+		
+		setEntrepreneursProb(entrepreneur / dTotal);
 		
 		return frequency;
 	}
@@ -321,19 +336,19 @@ public class DataSorter {
 		ArrayList<Double> xgivenyprob = new ArrayList<Double>();
 				
 		double fcount = ((this.XgivenYValues.get(0)) / this.entrepreneurs);	// Probability of female student given they are an entrepreneur
-		double mcount = (1-fcount);							// Probability of male student given they are an entrepreneur
+		double mcount = (1-fcount);											// Probability of male student given they are an entrepreneur
 		
 		double business = ((this.XgivenYValues.get(1)) / this.entrepreneurs);	// Probability student's parents own a business given they are an entrepreneur
-		double nobusiness = (1-business);					// Probability student's parents do not own a business given they are an entrepreneur
+		double nobusiness = (1-business);										// Probability student's parents do not own a business given they are an entrepreneur
 		
-		double job = ((this.XgivenYValues.get(2)) / this.entrepreneurs);		// Probability student has a part time job given they are an entrepreneur
-		double nojob = (1-job);								// Probability student does not have a part time job given they are an entrepreneur
+		double job = ((this.XgivenYValues.get(2)) / this.entrepreneurs);	// Probability student has a part time job given they are an entrepreneur
+		double nojob = (1-job);												// Probability student does not have a part time job given they are an entrepreneur
 		
-		double urban = ((this.XgivenYValues.get(3)) / this.entrepreneurs);		// Probability of student with an urban address given they are an entrepreneur
-		double rural = (1-urban);							// Probability of student with a rural address given they are an entrepreneur
+		double urban = ((this.XgivenYValues.get(3)) / this.entrepreneurs);	// Probability of student with an urban address given they are an entrepreneur
+		double rural = (1-urban);											// Probability of student with a rural address given they are an entrepreneur
 		
 		double studies = ((this.XgivenYValues.get(4)) / this.entrepreneurs);	// Probability of student who studies business given they are an entrepreneur
-		double nostudies = (1-studies);						// Probability of student who does not study business given they are an entrepreneur
+		double nostudies = (1-studies);											// Probability of student who does not study business given they are an entrepreneur
 		
 		
 		xgivenyprob.add(fcount);

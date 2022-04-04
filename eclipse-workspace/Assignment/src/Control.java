@@ -13,7 +13,7 @@ public class Control {
 		//System.out.println(data1.YValues(data1.DataCounter()));
 		//alg1.generateData();
 		
-		MachineLearningGUI gui1 = new MachineLearningGUI("Test");
+		MachineLearningGUI gui1 = new MachineLearningGUI("Naive Bayes Entrepreneur Predictor");
 		
 
 
