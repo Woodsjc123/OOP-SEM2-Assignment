@@ -1,3 +1,12 @@
+/*
+ * Class to display the GUI for the machine learning Assignment.
+ * It displays two radio buttons for each column, e.g. One button for female and one for male.
+ * One can only be selected at a time for each column.
+ * 
+ * Author: John Woods
+ */
+
+
 package com.assignment.OOP;
 
 import java.awt.FlowLayout;
@@ -16,8 +25,8 @@ public class MachineLearningGUI extends JFrame implements ActionListener {
 
 	private ButtonGroup 	gender, business, job, address, studies;
 	private JRadioButton 	female, male, hasBusiness, noBusiness, hasJob, noJob, urban, rural, doesStudy, noStudies;
-    private JButton 		submit;
-    private JPanel 			panel1, panel2, panel3, panel4, panel5, panel6;
+    private JButton 		submit, clear;
+    private JPanel 			panel1, panel2, panel3, panel4, panel5, panel6, panel7;
     private JLabel 			label; 
     
     
@@ -64,10 +73,11 @@ public class MachineLearningGUI extends JFrame implements ActionListener {
     	studies.add(doesStudy);
     	studies.add(noStudies);
     	
-    	
     	submit = new JButton("Submit traits");
     	submit.addActionListener(this);
     	
+    	clear = new JButton("Clear selection");
+    	clear.addActionListener(this);
     	
     	panel1 = new JPanel();
     	panel1.add(female);
@@ -96,7 +106,12 @@ public class MachineLearningGUI extends JFrame implements ActionListener {
     	
     	panel6 = new JPanel();
     	panel6.add(submit);
+    	panel6.add(clear);
     	add(panel6);
+    	
+//    	panel7 = new JPanel();
+//    	panel7.add(label);
+//    	add(panel7);
     	
     	
 	  	setVisible(true);
@@ -122,7 +137,7 @@ public class MachineLearningGUI extends JFrame implements ActionListener {
 
 			boolean studiesBusiness = doesStudy.isSelected();
 			boolean doesNotStudyBusiness = noStudies.isSelected();
-
+			
 			
 			boolean[] XTraits = {isFemale, isMale, doesHaveBusiness, doesNotHaveBusiness, doesHaveJob, 
 								 doesNotHaveJob, urbanAddress, ruralAddress, studiesBusiness, doesNotStudyBusiness};
@@ -130,7 +145,18 @@ public class MachineLearningGUI extends JFrame implements ActionListener {
 			
 			NaiveBayes alg1 = new NaiveBayes("MLdata.csv");
 			
-			alg1.calculateNaiveBayes(XTraits);
+			String output = alg1.calculateNaiveBayes(XTraits);
+			
+			JOptionPane.showMessageDialog(submit, output);
+		}
+		
+		if(e.getSource() == clear) {
+			
+			gender.clearSelection();
+			business.clearSelection();
+			job.clearSelection();
+			address.clearSelection();
+			studies.clearSelection();
 		}
 	}
 

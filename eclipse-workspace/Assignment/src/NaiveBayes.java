@@ -21,7 +21,7 @@ public class NaiveBayes {
 	
 	// Methods
 	
-	public void calculateNaiveBayes(boolean[] XTraits) {
+	public String calculateNaiveBayes(boolean[] XTraits) {
 		
 		FileProcessor file1 = new FileProcessor(this.fileName);
 		file1.openFile();
@@ -29,11 +29,17 @@ public class NaiveBayes {
 		ArrayList<Double> XColumns 			= new ArrayList<Double>();
 		ArrayList<Double> DenominatorArray 	= new ArrayList<Double>();
 		ArrayList<Double> XYColumns 		= new ArrayList<Double>();
+		ArrayList<Double> InverseXYColumns 	= new ArrayList<Double>();
 		ArrayList<Double> NumeratorArray 	= new ArrayList<Double>();
+		
+		ArrayList<Double> InverseNumeratorArray = new ArrayList<Double>();
+
 		
 		double numerator = 1;
 		double denominator = 1;
 		double result;
+		double inverse = 1;
+		double inverseResult;
 		
 	
 		DataSorter data1 = new DataSorter(file1.readStudentData());
@@ -44,8 +50,10 @@ public class NaiveBayes {
 		
 		data1.YValuesProbability();
 
-		data1.XgivenY();
-		XYColumns = data1.XgivenYProbability();
+		
+		XYColumns 		 = data1.XgivenYProbability(data1.XgivenY("Yes"), data1.getEntrepreneurs());
+		InverseXYColumns = data1.XgivenYProbability(data1.XgivenY("No"), data1.getNotEntrepreneurs());
+		
 		
 		int i = 0;
 
@@ -54,11 +62,14 @@ public class NaiveBayes {
 			
 			if(XTraits[i] == true) {
 				NumeratorArray.add(XYColumns.get(i));
+				InverseNumeratorArray.add(InverseXYColumns.get(i));
 				DenominatorArray.add(XColumns.get(i));
 			}	
 		}
 		
 		NumeratorArray.add(data1.getEntrepreneursProb());
+		
+		InverseNumeratorArray.add(1-(data1.getEntrepreneursProb()));
 	
 		
 		
@@ -72,14 +83,31 @@ public class NaiveBayes {
 			
 			denominator *= DenominatorArray.get(i);
 		}
-
 		
-		System.out.println(numerator);
-		System.out.println(denominator);
+
+		for(i=0; i<(InverseNumeratorArray.size()); i++) {
+			
+			inverse *= InverseNumeratorArray.get(i);
+		}
+		
 		
 		result = numerator / denominator;
 		
+		inverseResult = inverse / denominator;
+		
 		System.out.println(result);
+		System.out.println(inverseResult);
+		
+		
+		if(inverseResult > result) {
+
+			return "No";
+		}
+		
+		else {
+			
+			return "Yes";
+		}
 
 	}
 }
