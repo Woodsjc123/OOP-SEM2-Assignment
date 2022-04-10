@@ -38,9 +38,8 @@ public class DataSorter {
 	private long total = 0;
 	private double entrepreneurs = 0;
 	private double notEntrepreneurs = 0;
-
 	private double entrepreneursProb = 0;
-
+	
 
 	private List<String[]> csvvalues = new ArrayList<>();
 	private ArrayList<Long> frequencies = new ArrayList<Long>();
@@ -134,16 +133,16 @@ public class DataSorter {
 
 	// Method to take array of data and generate frequencies 
 	public ArrayList<Long> DataCounter() {
-		int i = 0;
-		int datastart = 0;		// Index of actual data start, after column names
+		int i 				= 0;
+		int datastart 		= 0;	// Index of actual data start, after column names
 		
-		long total = 0;			// Total number of students	
-		long fcount = 0;		// Number of female students		
-		long business = 0;		// Number of students whose parents own a business	
-		long job = 0;			// Number of students who have a part time job	
-		long urban = 0;			// Number of students with an urban address
-		long studies = 0;		// Number of students who study business	
-		long entrepreneur = 0;	// Number of students who became entrepreneurs
+		long total 			= 0;	// Total number of students	
+		long fcount 		= 0;	// Number of female students		
+		long business 		= 0;	// Number of students whose parents own a business	
+		long job 			= 0;	// Number of students who have a part time job	
+		long urban 			= 0;	// Number of students with an urban address
+		long studies 		= 0;	// Number of students who study business	
+		long entrepreneur 	= 0;	// Number of students who became entrepreneurs
 		
 		ArrayList<Long> frequency = new ArrayList<Long>();
 				
@@ -154,8 +153,9 @@ public class DataSorter {
 		
 		datastart = i;
 
-		total = (csvvalues.size()-i);	// Calculates total number of students
+		total = (csvvalues.size()-datastart);	// Calculates total number of students
 		setTotal(total);
+		
 		
 		// Calculating gender
 		for(i = datastart; i < csvvalues.size(); i++) {			
@@ -217,6 +217,7 @@ public class DataSorter {
 		return frequency;
 	}
 	
+
 
 
 	// Method to calculate the frequencies of X values given Y
