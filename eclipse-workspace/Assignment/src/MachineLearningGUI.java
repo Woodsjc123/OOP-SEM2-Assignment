@@ -9,7 +9,7 @@
 
 package com.assignment.OOP;
 
-import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -26,18 +26,19 @@ public class MachineLearningGUI extends JFrame implements ActionListener {
 	private ButtonGroup 	gender, business, job, address, studies;
 	private JRadioButton 	female, male, hasBusiness, noBusiness, hasJob, noJob, urban, rural, doesStudy, noStudies;
     private JButton 		submit, clear;
-    private JPanel 			panel1, panel2, panel3, panel4, panel5, panel6, panel7;
-    private JLabel 			label; 
-    
-    
-    
+    private JPanel 			panel1, panel2, panel3, panel4, panel5, panel6;
+
     NaiveBayes alg1 = new NaiveBayes("MLdata.csv");
+    
     
     MachineLearningGUI(String title) {
     	
-    	super(title);
-    	setSize(400,500);
-    	setLayout(new FlowLayout());
+    	JFrame frame = new JFrame(title);
+    	
+    	frame.setSize(400,500);
+    	frame.setLayout(new GridLayout(6, 2, 5, 1));
+    	
+    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// Stop the program when the window is closed
     	
     	
     	gender 		= new ButtonGroup();
@@ -79,42 +80,38 @@ public class MachineLearningGUI extends JFrame implements ActionListener {
     	clear = new JButton("Clear selection");
     	clear.addActionListener(this);
     	
-    	panel1 = new JPanel();
+    	panel1 = new JPanel();	// Gender buttons
     	panel1.add(female);
     	panel1.add(male);
-    	add(panel1);
+    	frame.add(panel1);
     	
-    	panel2 = new JPanel();
+    	panel2 = new JPanel();	// Parents business buttons
     	panel2.add(hasBusiness);
     	panel2.add(noBusiness);
-    	add(panel2);
+    	frame.add(panel2);
     	
-    	panel3 = new JPanel();
+    	panel3 = new JPanel();	// Part time job buttons
     	panel3.add(hasJob);
     	panel3.add(noJob);
-    	add(panel3);
+    	frame.add(panel3);
     	
-    	panel4 = new JPanel();
+    	panel4 = new JPanel();	// Address buttons
     	panel4.add(urban);
     	panel4.add(rural);
-    	add(panel4);
+    	frame.add(panel4);
     	
-    	panel5 = new JPanel();
+    	panel5 = new JPanel();	// Studies business buttons
     	panel5.add(doesStudy);
     	panel5.add(noStudies);
-    	add(panel5);
+    	frame.add(panel5);
     	
-    	panel6 = new JPanel();
+    	panel6 = new JPanel();	// Submit / Clear selection
     	panel6.add(submit);
     	panel6.add(clear);
-    	add(panel6);
-    	
-//    	panel7 = new JPanel();
-//    	panel7.add(label);
-//    	add(panel7);
+    	frame.add(panel6);
     	
     	
-	  	setVisible(true);
+	  	frame.setVisible(true);
 
     }
 

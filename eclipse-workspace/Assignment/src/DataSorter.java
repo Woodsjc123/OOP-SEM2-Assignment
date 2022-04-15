@@ -1,8 +1,8 @@
 	/*
-	 * 	The DataSorter() class takes in the raw data processed from the csv file from FileProcessor() and converts
+	 * 	The DataSorter class takes in the raw data processed from the csv file from FileProcessor and converts
 	 *  it into useful data in the form of arrays of frequencies and probabilities.
 	 * 
-	 *  DataSorter() is constructed with just the values from FileProcessor() with an array called csvvalues
+	 *  DataSorter is constructed with just the values from FileProcessor with an array called csvvalues
 	 * 
 	 * 	There are 5 methods
 	 * 	DataCounter() takes in the csvvalues ArrayList and counts the frequencies of each row, and putting them into the
@@ -21,7 +21,7 @@
 	 *  values, and puts the results into the ArrayList XgivenYProbability
 	 *  
 	 *  Author: John Woods
-	 *  Last modified: 2/4/22
+	 * 
 	 * 
 	 */
 
@@ -35,19 +35,17 @@ import java.util.List;
 public class DataSorter {
 	
 	// Attributes
-	private long total = 0;
-	private double entrepreneurs = 0;
+	long size			 = 0;
+	private int endTrain = 0;
+	private long total 	 = 0;
+	private double entrepreneurs 	 = 0;
+	private double notEntrepreneurs  = 0;
 	private double entrepreneursProb = 0;
-
-
-	private List<String[]> csvvalues = new ArrayList<>();
-	private ArrayList<Long> frequencies = new ArrayList<Long>();
-	private ArrayList<Long> XgivenYValues = new ArrayList<Long>();
 	
-	private ArrayList<Double> YValues = new ArrayList<Double>();
-	private ArrayList<Double> XValues = new ArrayList<Double>();
-	private ArrayList<Double> XgivenYProbability = new ArrayList<Double>();
 
+	private List<String[]> csvvalues 			 = new ArrayList<>();
+	private ArrayList<Long> frequencies 		 = new ArrayList<Long>();
+	private ArrayList<Long> testingFrequencies 	 = new ArrayList<Long>();
 	
 	
 	// Constructor
@@ -74,6 +72,17 @@ public class DataSorter {
 		this.entrepreneurs = entrepreneurs;
 	}
 	
+	public double getEntrepreneurs() {
+		return entrepreneurs;
+	}
+
+	public void setNotEntrepreneurs(double notEntrepreneurs) {
+		this.notEntrepreneurs = notEntrepreneurs;
+	}
+	
+	public double getNotEntrepreneurs() {
+		return notEntrepreneurs;
+	}
 
 	public double getEntrepreneursProb() {
 		return entrepreneursProb;
@@ -93,44 +102,31 @@ public class DataSorter {
 		this.frequencies = frequencies;
 	}	
 
-	// Probabilities
-	public void setXgivenY(ArrayList<Long> XgivenY) {
-		this.XgivenYValues = XgivenY;
-	}
-	
-	public void setYValuesProbability(ArrayList<Double> YValues) {
-		this.YValues = YValues;
+	public int getEndTrain() {
+		return endTrain;
 	}
 
-	public void setXValuesProbability(ArrayList<Double> XValues) {
-		this.XValues = XValues;
-	}
-	
-	public void setXgivenYProbability(ArrayList<Double> xgivenyprob) {
-		this.XgivenYProbability = xgivenyprob;
+	public void setEndTrain(int endTrain) {
+		this.endTrain = endTrain;
 	}
 
-	public ArrayList<Double> getXgivenYProbability() {
-		return XgivenYProbability;
-	
-	}
-	
 	
 	// Methods
-	
 
-	// Method to take array of data and generate frequencies 
-	public ArrayList<Long> DataCounter() {
-		int i = 0;
-		int datastart = 0;		// Index of actual data start, after column names
+	// Method to take array of data and generate two ArrayLists, one for training the model and one for testing the accuracy
+	public ArrayList<Long> DataCounter(double trainPercent) {
 		
-		long total = 0;			// Total number of students	
-		long fcount = 0;		// Number of female students		
-		long business = 0;		// Number of students whose parents own a business	
-		long job = 0;			// Number of students who have a part time job	
-		long urban = 0;			// Number of students with an urban address
-		long studies = 0;		// Number of students who study business	
-		long entrepreneur = 0;	// Number of students who became entrepreneurs
+		int i 				= 0;
+		int dataStart 		= 0;	// Index of actual data start, after column names
+		int endTrain		= 0;	// Index of data to be tested
+		
+		long total 			= 0;	// Total number of students	
+		long fcount 		= 0;	// Number of female students		
+		long business 		= 0;	// Number of students whose parents own a business	
+		long job 			= 0;	// Number of students who have a part time job	
+		long urban 			= 0;	// Number of students with an urban address
+		long studies 		= 0;	// Number of students who study business	
+		long entrepreneur 	= 0;	// Number of students who became entrepreneurs
 		
 		ArrayList<Long> frequency = new ArrayList<Long>();
 				
@@ -139,48 +135,53 @@ public class DataSorter {
 			i++;
 		}
 		
-		datastart = i;
+		dataStart = i;
+		
+		this.size = csvvalues.size();
 
-		total = (csvvalues.size()-i);	// Calculates total number of students
+		total = (csvvalues.size()-dataStart);	 // Calculates total number of students
 		setTotal(total);
 		
+		endTrain = (int) (total * trainPercent); // Calculates the end of the training portion of the data
+		setEndTrain(endTrain);
+		
 		// Calculating gender
-		for(i = datastart; i < csvvalues.size(); i++) {			
+		for(i = dataStart; i < endTrain; i++) {			
 			if((csvvalues.get(i)[0].trim().contentEquals("Female"))) {
 				fcount++;
 			}
 		}
 		
 		// Calculating how many student's parents own a business
-		for(i = datastart; i < csvvalues.size(); i++) {			
+		for(i = dataStart; i < endTrain; i++) {			
 			if(csvvalues.get(i)[1].trim().contentEquals("Yes")) {
 				business++;
 			}	
 		}		
 		
 		// Calculating how many students have part time jobs
-		for(i = datastart; i < csvvalues.size(); i++) {			
+		for(i = dataStart; i < endTrain; i++) {			
 			if(csvvalues.get(i)[2].trim().contentEquals("Yes")) {
 				job++;
 			}	
 		}
 		
 		// Calculating how many urban addresses there are
-		for(i = datastart; i < csvvalues.size(); i++) {			
+		for(i = dataStart; i < endTrain; i++) {			
 			if(csvvalues.get(i)[3].trim().contentEquals("Urban")) {
 				urban++;
 			}	
 		}
 		
 		// Calculating how many students study business
-		for(i = datastart; i < csvvalues.size(); i++) {			
+		for(i = dataStart; i < endTrain; i++) {			
 			if(csvvalues.get(i)[4].trim().contentEquals("Yes")) {
 				studies++;
 			}			
 		}
 		
 		// Calculating how many students became entrepreneurs
-		for(i = datastart; i < csvvalues.size(); i++) {			
+		for(i = dataStart; i < endTrain; i++) {			
 			if(csvvalues.get(i)[5].trim().contentEquals("Yes")) {
 				entrepreneur++;
 			}				
@@ -195,6 +196,7 @@ public class DataSorter {
 		
 		setFrequencies(frequency);
 		setEntrepreneurs(entrepreneur);
+		setNotEntrepreneurs(total-entrepreneur);
 		
 		double dTotal = total;
 		
@@ -202,10 +204,27 @@ public class DataSorter {
 		
 		return frequency;
 	}
+
 	
+	// Method that reads back individual rows
+	public ArrayList<String> rowReader(int i) {
+		
+		ArrayList<String> row = new ArrayList<String>();
+		
+		row.add(csvvalues.get(i)[0].trim());
+		row.add(csvvalues.get(i)[1].trim());
+		row.add(csvvalues.get(i)[2].trim());
+		row.add(csvvalues.get(i)[3].trim());
+		row.add(csvvalues.get(i)[4].trim());
+		row.add(csvvalues.get(i)[5].trim());
+		
+		return row;
+	}
+
+
 
 	// Method to calculate the frequencies of X values given Y
-	public ArrayList<Long> XgivenY() {
+	public ArrayList<Long> XgivenY(String Y) {
 		
 		int i = 0;
 		int datastart = 0;		// Index of actual data start, after column names
@@ -227,35 +246,35 @@ public class DataSorter {
 		
 		// Calculating female students given that they are an entrepreneur
 		for(i = datastart; i < csvvalues.size(); i++) {			
-			if((csvvalues.get(i)[0].trim().contentEquals("Female")) && (csvvalues.get(i)[5].trim().contentEquals("Yes"))) {
+			if((csvvalues.get(i)[0].trim().contentEquals("Female")) && (csvvalues.get(i)[5].trim().contentEquals(Y))) {
 				fcount++;
 			}
 		}
 		
 		// Calculating how many student's parents own a business
 		for(i = datastart; i < csvvalues.size(); i++) {			
-			if((csvvalues.get(i)[1].trim().contentEquals("Yes")) && (csvvalues.get(i)[5].trim().contentEquals("Yes"))) {
+			if((csvvalues.get(i)[1].trim().contentEquals("Yes")) && (csvvalues.get(i)[5].trim().contentEquals(Y))) {
 				business++;
 			}	
 		}		
 
 		// Calculating how many students have part time jobs
 		for(i = datastart; i < csvvalues.size(); i++) {			
-			if((csvvalues.get(i)[2].trim().contentEquals("Yes")) && (csvvalues.get(i)[5].trim().contentEquals("Yes"))) {
+			if((csvvalues.get(i)[2].trim().contentEquals("Yes")) && (csvvalues.get(i)[5].trim().contentEquals(Y))) {
 				job++;
 			}	
 		}
 
 		// Calculating how many urban addresses there are
 		for(i = datastart; i < csvvalues.size(); i++) {			
-			if((csvvalues.get(i)[3].trim().contentEquals("Urban")) && (csvvalues.get(i)[5].trim().contentEquals("Yes"))) {
+			if((csvvalues.get(i)[3].trim().contentEquals("Urban")) && (csvvalues.get(i)[5].trim().contentEquals(Y))) {
 				urban++;
 			}	
 		}
 		
 		// Calculating how many students study business
 		for(i = datastart; i < csvvalues.size(); i++) {			
-			if((csvvalues.get(i)[4].trim().contentEquals("Yes")) && (csvvalues.get(i)[5].trim().contentEquals("Yes"))) {
+			if((csvvalues.get(i)[4].trim().contentEquals("Yes")) && (csvvalues.get(i)[5].trim().contentEquals(Y))) {
 				studies++;
 			}			
 		}
@@ -266,52 +285,50 @@ public class DataSorter {
 		XgivenY.add(urban);
 		XgivenY.add(studies);
 
-		setXgivenY(XgivenY);
+		//setXgivenY(XgivenY);
 		
 		return XgivenY;
 	}
 	
 	
 	// Method that takes in the frequency of Y values and calculates their probability
-	public ArrayList<Double> YValuesProbability() {
+	public ArrayList<Double> YValuesProbability(ArrayList<Long> frequencies) {
 		
 		ArrayList<Double> yvalues = new ArrayList<Double>();
 
 		double total = getTotal();	// Total number of students	
 
 		
-		double entrepreneur = ((this.frequencies.get(5)) / total);	// Probability of student who became entrepreneurs
+		double entrepreneur = ((frequencies.get(5)) / total);	// Probability of student who became entrepreneurs
 		double noentrepreneur = (1-entrepreneur);			// Probability of student who did not become entrepreneurs
 		
 		yvalues.add(entrepreneur);
 		yvalues.add(noentrepreneur);
-
-		setYValuesProbability(yvalues);
 		
 		return yvalues;
 	}
 	
 	
 	// Method that takes in the frequency of X value traits and calculates their probability
-	public ArrayList<Double> XValuesProbability() {
+	public ArrayList<Double> XValuesProbability(ArrayList<Long> frequencies) {
 		
 		ArrayList<Double> xvalues = new ArrayList<Double>();
 
 		double total = getTotal();							// Total number of students	
 		
-		double fcount = ((this.frequencies.get(0)) / total);		// Probability of female student
+		double fcount = ((frequencies.get(0)) / total);		// Probability of female student
 		double mcount = (1-fcount);							// Probability of male student
 		
-		double business = ((this.frequencies.get(1)) / total);		// Probability student's parents own a business
+		double business = ((frequencies.get(1)) / total);		// Probability student's parents own a business
 		double nobusiness = (1-business);					// Probability student's parents do not own a business
 		
-		double job = ((this.frequencies.get(2)) / total);			// Probability student has a part time job
+		double job = ((frequencies.get(2)) / total);			// Probability student has a part time job
 		double nojob = (1-job);								// Probability student does not have a part time job
 		
-		double urban = ((this.frequencies.get(3)) / total);		// Probability of student with an urban address
+		double urban = ((frequencies.get(3)) / total);		// Probability of student with an urban address
 		double rural = (1-urban);							// Probability of student with a rural address
 		
-		double studies = ((this.frequencies.get(4)) / total);		// Probability of student who studies business
+		double studies = ((frequencies.get(4)) / total);		// Probability of student who studies business
 		double nostudies = (1-studies);						// Probability of student who does not study business
 		
 		
@@ -325,30 +342,28 @@ public class DataSorter {
 		xvalues.add(rural);
 		xvalues.add(studies);
 		xvalues.add(nostudies);
-		
-		setXValuesProbability(xvalues);
 
 		return xvalues;
 	}
 	
-	public ArrayList<Double> XgivenYProbability() {
+	public ArrayList<Double> XgivenYProbability(ArrayList<Long> XgivenYValues, double Y) {
 		
 		ArrayList<Double> xgivenyprob = new ArrayList<Double>();
 				
-		double fcount = ((this.XgivenYValues.get(0)) / this.entrepreneurs);	// Probability of female student given they are an entrepreneur
-		double mcount = (1-fcount);											// Probability of male student given they are an entrepreneur
+		double fcount = ((XgivenYValues.get(0)) / Y);	// Probability of female student given they are an entrepreneur
+		double mcount = (1-fcount);						// Probability of male student given they are an entrepreneur
 		
-		double business = ((this.XgivenYValues.get(1)) / this.entrepreneurs);	// Probability student's parents own a business given they are an entrepreneur
-		double nobusiness = (1-business);										// Probability student's parents do not own a business given they are an entrepreneur
+		double business = ((XgivenYValues.get(1)) / Y);	// Probability student's parents own a business given they are an entrepreneur
+		double nobusiness = (1-business);				// Probability student's parents do not own a business given they are an entrepreneur
 		
-		double job = ((this.XgivenYValues.get(2)) / this.entrepreneurs);	// Probability student has a part time job given they are an entrepreneur
-		double nojob = (1-job);												// Probability student does not have a part time job given they are an entrepreneur
+		double job = ((XgivenYValues.get(2)) / Y);		// Probability student has a part time job given they are an entrepreneur
+		double nojob = (1-job);							// Probability student does not have a part time job given they are an entrepreneur
 		
-		double urban = ((this.XgivenYValues.get(3)) / this.entrepreneurs);	// Probability of student with an urban address given they are an entrepreneur
-		double rural = (1-urban);											// Probability of student with a rural address given they are an entrepreneur
+		double urban = ((XgivenYValues.get(3)) / Y);	// Probability of student with an urban address given they are an entrepreneur
+		double rural = (1-urban);						// Probability of student with a rural address given they are an entrepreneur
 		
-		double studies = ((this.XgivenYValues.get(4)) / this.entrepreneurs);	// Probability of student who studies business given they are an entrepreneur
-		double nostudies = (1-studies);											// Probability of student who does not study business given they are an entrepreneur
+		double studies = ((XgivenYValues.get(4)) / Y);	// Probability of student who studies business given they are an entrepreneur
+		double nostudies = (1-studies);					// Probability of student who does not study business given they are an entrepreneur
 		
 		
 		xgivenyprob.add(fcount);
@@ -362,7 +377,7 @@ public class DataSorter {
 		xgivenyprob.add(studies);
 		xgivenyprob.add(nostudies);
 		
-		setXgivenYProbability(xgivenyprob);
+		//setXgivenYProbability(xgivenyprob);
 
 		return xgivenyprob;
 	}

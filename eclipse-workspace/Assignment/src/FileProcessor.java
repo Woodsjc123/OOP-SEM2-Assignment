@@ -2,6 +2,9 @@
  * This class reads in the CSV file and generates the probability of the Y values and the X values
  * Columns: Gender, Business, Job, Address, Studies, Entrepreneur
  * 
+ * readStudentData() takes in the csv file and returns the data as List of ArrayLists
+ * 
+ * Author: John Woods
  */
 
 
@@ -39,10 +42,10 @@ public class FileProcessor {
 	{
 		int fcount = 0;
 		int mcount = 0;
+		
 		String line = "";
 		List<String[]> values = new ArrayList<>();	// Array of arrays
 		
-		//ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>(6);
 		
 		try 
 		{
