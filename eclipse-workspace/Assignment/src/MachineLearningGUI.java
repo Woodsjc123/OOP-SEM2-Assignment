@@ -28,7 +28,7 @@ public class MachineLearningGUI extends JFrame implements ActionListener {
     private JButton 		submit, clear;
     private JPanel 			panel1, panel2, panel3, panel4, panel5, panel6;
 
-    NaiveBayes alg1 = new NaiveBayes("MLdata.csv");
+    NaiveBayes alg1 = new NaiveBayes("Book1.csv");
     
     
     MachineLearningGUI(String title) {
@@ -120,6 +120,9 @@ public class MachineLearningGUI extends JFrame implements ActionListener {
 
 		if (e.getSource() == submit) {
 			
+			int i = 0;
+			boolean noValues = true;
+			
 			boolean isFemale = female.isSelected();
 			boolean isMale = male.isSelected();
 			
@@ -138,6 +141,18 @@ public class MachineLearningGUI extends JFrame implements ActionListener {
 			
 			boolean[] XTraits = {isFemale, isMale, doesHaveBusiness, doesNotHaveBusiness, doesHaveJob, 
 								 doesNotHaveJob, urbanAddress, ruralAddress, studiesBusiness, doesNotStudyBusiness};
+			
+			for(i=0; i<10; i++) {
+				
+				if( XTraits[i] == true) {
+					noValues = false;
+				}
+			}
+			
+			if(noValues == true) {
+				JOptionPane.showMessageDialog(submit, "Please select at least one option");
+				throw new IllegalStateException("No options selected");		
+			}
 			
 			
 			NaiveBayes alg1 = new NaiveBayes("MLdata.csv");
